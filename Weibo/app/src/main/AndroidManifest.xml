@@ -9,10 +9,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.StatusListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+
         <activity
             android:name=".activity.AuthActivity"
             android:label="@string/app_name"
@@ -23,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AccessAuthorizationActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

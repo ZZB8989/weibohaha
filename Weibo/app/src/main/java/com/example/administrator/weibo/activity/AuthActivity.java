@@ -10,6 +10,7 @@ import com.example.administrator.weibo.common.AppConstants.WeiboConfig;
 import com.example.administrator.weibo.entity.AccessToken;
 import com.example.administrator.weibo.model.LoginModel;
 import com.example.administrator.weibo.model.callback.LoginCallback.GetAccessTokenCallback;
+import com.example.administrator.weibo.utils.SharedPreferencesUtils;
 import com.example.administrator.weibo.utils.UrlUtils;
 
 import java.util.Map;
@@ -20,12 +21,22 @@ import java.util.Map;
 public class AuthActivity extends BaseActivity implements GetAccessTokenCallback{
     private WebView mWebView;
     private LoginModel mLoginModel = new LoginModel();
+    private SharedPreferencesUtils sharedPreferencesUtils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
-        initViews();//初始化View，做一些findViewById的操作
-        loadData();
+        sharedPreferencesUtils=new SharedPreferencesUtils(AuthActivity.this);
+        if(sharedPreferencesUtils.getToken().isValid()) {
+            mLoginModel.gotoStatusListActivity(AuthActivity.this);
+            finish();
+        }
+        else
+        {
+            initViews();//初始化View，做一些findViewById的操作
+            loadData();
+        }
+
     }
 
     private void loadData() {
@@ -53,6 +64,10 @@ public class AuthActivity extends BaseActivity implements GetAccessTokenCallback
 
     @Override
     public void onGetTokenSuccess(AccessToken token) {
+
+        sharedPreferencesUtils.saveToken(token);
+        mLoginModel.gotoStatusListActivity(AuthActivity.this);
+        finish();
         Toast.makeText(this, "onGetTokenSuccess:" + token.toString(), Toast.LENGTH_LONG).show();
     }
 
