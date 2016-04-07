@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class StatusListAdpater extends RecyclerView.Adapter<ViewHolder> {
 
-    private List<Status> statusList;
-    private Context mcontext;
+    private List<Status> mStatusList;
+    private Context mContext;
     private ImageButton imAvatar;
     private TextView tvUserName;
     private TextView tvSource;
@@ -32,8 +32,8 @@ public class StatusListAdpater extends RecyclerView.Adapter<ViewHolder> {
     private TextView tvCommentsCount;
     private ImageButton imAttitudes;
     private TextView tvAttitudesCount;
-    private OnItemClickListener onClickListener;
-    private OnItemLongClickListener onLongClickListener;
+    private OnItemClickListener mOnClickListener;
+    private OnItemLongClickListener mOnLongClickListener;
 
     public interface OnItemClickListener {
         void onClick(View v);
@@ -41,13 +41,12 @@ public class StatusListAdpater extends RecyclerView.Adapter<ViewHolder> {
     public interface OnItemLongClickListener {
         void onLongClick(View v);
     }
-    public StatusListAdpater(Context mcontext, OnItemClickListener onClickListener,
-                             OnItemLongClickListener onLongClickListener)
-    {
-        this.statusList=new ArrayList<Status>();
-        this.mcontext = mcontext;
-        this.onClickListener = onClickListener;
-        this.onLongClickListener = onLongClickListener;
+    public StatusListAdpater(Context context, OnItemClickListener onClickListener,
+                             OnItemLongClickListener onLongClickListener) {
+        this.mStatusList=new ArrayList<Status>();
+        this.mContext = context;
+        this.mOnClickListener = onClickListener;
+        this.mOnLongClickListener = onLongClickListener;
     }
 
 
@@ -56,8 +55,8 @@ public class StatusListAdpater extends RecyclerView.Adapter<ViewHolder> {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_statuslist, parent, false);
-        ViewHolder vh = new ViewHolder(v, onClickListener,
-                onLongClickListener);
+        ViewHolder vh = new ViewHolder(v, mOnClickListener,
+                mOnLongClickListener);
         return vh;
     }
 
@@ -65,13 +64,13 @@ public class StatusListAdpater extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         View v=holder.v;
         initViews(v);
-        initData(statusList,position);
+        initData(mStatusList,position);
     }
 
 
     @Override
     public int getItemCount() {
-        return statusList.size();
+        return mStatusList.size();
     }
 
 
@@ -87,8 +86,7 @@ public class StatusListAdpater extends RecyclerView.Adapter<ViewHolder> {
         imAttitudes=(ImageButton)v.findViewById(R.id.im_attitudes);
         tvAttitudesCount=(TextView)v.findViewById(R.id.tv_attitudes_count);
     }
-    private void initData(List<Status> statusList,int position)
-    {
+    private void initData(List<Status> statusList,int position) {
         tvUserName.setText(statusList.get(position).getUser().getScreenName());
         tvSource.setText(Html.fromHtml(statusList.get(position).getSource(), null,null));
 
@@ -97,9 +95,8 @@ public class StatusListAdpater extends RecyclerView.Adapter<ViewHolder> {
 //        tvCommentsCount.setText(String.format("%d", statusList.get(position).getCommentsCount()));
         tvAttitudesCount.setText(String.format("%d", statusList.get(position).getAttitudesCount()));
     }
-    public void setData(List<Status> statusList)
-    {
+    public void setData(List<Status> statusList) {
         Log.d("statusList.size",String.format("%d",statusList.size()));
-        this.statusList=statusList;
+        this.mStatusList=statusList;
     }
 }
